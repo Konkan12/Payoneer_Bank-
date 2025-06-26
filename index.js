@@ -1,39 +1,75 @@
-const loginBtn = document.getElementById('loging-start');
-loginBtn.addEventListener('click', function () {
-    const loginArea = document.getElementById('loging-area');
-    loginArea.style.display = "none";
 
-    const transactionArea = document.getElementById("transaction-area");
-    transactionArea.style.display = "block";
-});
 
-// Event deposit handler
-const depositBtn = document.getElementById('adddeposit');
-depositBtn.addEventListener('click', function () {
+   // Login Event
+        const loginBtn = document.getElementById('loging-start');
+        loginBtn.addEventListener('click', function () {
+            const emailField = document.getElementById('email');
+            const passwordField = document.getElementById('password');
 
-    const depositAmount = document.getElementById('depositAmount').value;
-    const depositNumber = parseFloat(depositAmount);
+            const email = emailField.value;
+            const password = passwordField.value;
 
-    // Validation
-    if (isNaN(depositNumber) || depositNumber <= 0) {
-        alert('Please enter a valid deposit amount.');
-        return;
-    }
+            // Basic validation
+            if (email === '' || password === '') {
+                alert('Please enter your email and password.');
+                return;
+            }
 
-    // Update deposit and balance
-    updateSpan('correntDeposite', depositNumber);
-    updateSpan('currentBalence', depositNumber);
+            // Successful login
+            document.getElementById('loging-area').style.display = 'none';
+            document.getElementById('transaction-area').style.display = 'block';
+        });
 
-    // Clear the input field after deposit
-    document.getElementById('depositAmount').value = '';
-});
+        // Deposit Event
+        const depositBtn = document.getElementById('adddeposit');
+        depositBtn.addEventListener('click', function () {
+            const depositAmount = document.getElementById('depositAmount').value;
+            const depositNumber = parseFloat(depositAmount);
 
-// Update function
-function updateSpan(id, amount) {
-    const currentText = document.getElementById(id).innerText;
-    const currentNumber = parseFloat(currentText);
+            if (isNaN(depositNumber) || depositNumber <= 0) {
+                alert('Please enter a valid deposit amount.');
+                return;
+            }
 
-    const total = amount + currentNumber;
+            // Update deposit and balance
+            updateSpan('correntDeposite', depositNumber);
+            updateSpan('currentBalence', depositNumber);
 
-    document.getElementById(id).innerText = total;
-}
+            // Clear input field
+            document.getElementById('depositAmount').value = '';
+        });
+
+        // Withdraw Event
+        const withdrawBtn = document.getElementById('addwithro');
+        withdrawBtn.addEventListener('click', function () {
+            const withdrawAmount = document.getElementById('withdrawAmount').value;
+            const withdrawNumber = parseFloat(withdrawAmount);
+
+            if (isNaN(withdrawNumber) || withdrawNumber <= 0) {
+                alert('Please enter a valid withdraw amount.');
+                return;
+            }
+
+            const currentBalanceText = document.getElementById('currentBalence').innerText;
+            const currentBalance = parseFloat(currentBalanceText);
+
+            if (withdrawNumber > currentBalance) {
+                alert('Insufficient Balance.');
+                return;
+            }
+
+            // Update withdraw and balance
+            updateSpan('correntWithdraw', withdrawNumber);
+            updateSpan('currentBalence', -withdrawNumber);
+
+            // Clear input field
+            document.getElementById('withdrawAmount').value = '';
+        });
+
+        // Update Function
+        function updateSpan(id, amount) {
+            const currentText = document.getElementById(id).innerText;
+            const currentNumber = parseFloat(currentText);
+            const total = currentNumber + amount;
+            document.getElementById(id).innerText = total;
+        }
