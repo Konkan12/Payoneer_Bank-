@@ -1,3 +1,6 @@
-body{
-    padding: 100px;
-}
+#transaction-area{
+    display: none;
+    margin: 2%;
+    font-size: 40px ;
+    font-weight: bold;
+} 
